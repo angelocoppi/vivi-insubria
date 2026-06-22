@@ -267,4 +267,15 @@ if (pagine.gite) {
   <p>Ricevi in anticipo le nuove gite, le esperienze e le storie del territorio direttamente nella tua email.</p>
   <a href="/contatti" class="btn-lago">Iscriviti alla newsletter</a>
 </section>
+
+<script>
+  // Intercetta i token di Netlify Identity e reindirizza all'admin
+  if (window.location.hash && (
+    window.location.hash.includes('invite_token') ||
+    window.location.hash.includes('recovery_token') ||
+    window.location.hash.includes('confirmation_token')
+  )) {
+    window.location.href = '/admin/' + window.location.hash;
+  }
+</script>
 </Layout>
