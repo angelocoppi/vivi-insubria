@@ -1,0 +1,270 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import pagine from '../content/impostazioni/pagine.json';
+
+let gite = [];
+if (pagine.gite) {
+  const tutte = await getCollection('gite');
+  gite = tutte.filter(g => g.data.published).slice(0, 3);
+}
+---
+<Layout title="Home">
+<style>
+  /* HERO */
+  .hero {
+    background: linear-gradient(160deg, var(--verde) 0%, #1a3a0a 100%);
+    color: white;
+    padding: 5rem 1.5rem 4rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url('/images/hero-bg.jpg') center/cover no-repeat;
+    opacity: 0.18;
+  }
+  .hero-inner { position: relative; max-width: 700px; margin: 0 auto; }
+  .hero-eyebrow {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 20px;
+    padding: 0.3rem 1rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 1.25rem;
+  }
+  .hero p {
+    font-size: 1.1rem;
+    opacity: 0.88;
+    max-width: 520px;
+    margin: 0 auto 2rem;
+    line-height: 1.7;
+  }
+  .hero-cta {
+    display: inline-flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .btn-primary {
+    background: white;
+    color: var(--verde);
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.75rem 1.75rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
+  .btn-secondary {
+    color: white;
+    border: 1px solid rgba(255,255,255,0.5);
+    font-size: 0.95rem;
+    padding: 0.75rem 1.75rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+  .btn-secondary:hover { background: rgba(255,255,255,0.1); }
+
+  /* VALORI */
+  .valori {
+    max-width: 1100px;
+    margin: 4rem auto;
+    padding: 0 1.5rem;
+  }
+  .valori-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  .valore-card {
+    background: white;
+    border: 1px solid var(--bordo);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+  }
+  .valore-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+  .valore-card h3 {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    color: var(--verde);
+    margin-bottom: 0.5rem;
+  }
+  .valore-card p { font-size: 0.875rem; color: var(--testo-muted); }
+
+  /* SEZIONE TITOLO */
+  .sezione { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem 3rem; }
+  .sezione-header { text-align: center; margin-bottom: 2.5rem; }
+  .sezione-header h2 {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    color: var(--verde);
+    margin-bottom: 0.5rem;
+  }
+  .sezione-header p { color: var(--testo-muted); }
+
+  /* CARD GITA */
+  .gite-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+  .gita-card {
+    background: white;
+    border: 1px solid var(--bordo);
+    border-radius: 12px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.15s, box-shadow 0.15s;
+    display: flex;
+    flex-direction: column;
+  }
+  .gita-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+  .gita-img {
+    height: 180px;
+    background: var(--verde-pale);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    overflow: hidden;
+  }
+  .gita-img img { width: 100%; height: 100%; object-fit: cover; }
+  .gita-body { padding: 1.25rem; flex: 1; display: flex; flex-direction: column; }
+  .gita-badge {
+    display: inline-block;
+    background: var(--verde-pale);
+    color: var(--verde-chiaro);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    margin-bottom: 0.6rem;
+  }
+  .gita-body h3 { font-family: var(--font-display); font-size: 1.05rem; color: var(--testo); margin-bottom: 0.5rem; }
+  .gita-meta { display: flex; gap: 1rem; font-size: 0.8rem; color: var(--testo-muted); margin-top: auto; padding-top: 0.75rem; }
+  .gita-prezzo { font-weight: 600; color: var(--verde); font-size: 1rem; }
+
+  /* CTA BAND */
+  .cta-band {
+    background: var(--lago-pale);
+    border-top: 1px solid #BEE3F8;
+    border-bottom: 1px solid #BEE3F8;
+    padding: 3rem 1.5rem;
+    text-align: center;
+  }
+  .cta-band h2 { font-family: var(--font-display); font-size: 1.6rem; color: var(--lago); margin-bottom: 0.75rem; }
+  .cta-band p { color: var(--testo-muted); margin-bottom: 1.5rem; }
+  .btn-lago {
+    background: var(--lago);
+    color: white;
+    font-weight: 600;
+    padding: 0.75rem 2rem;
+    border-radius: 8px;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.15s;
+  }
+  .btn-lago:hover { background: #1E5A9C; }
+</style>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <span class="hero-eyebrow">Lombardia · Canton Ticino</span>
+    <h1>Scopri l'Insubria,<br />un passo alla volta</h1>
+    <p>Gite organizzate, esperienze autentiche, prodotti locali e storie di un territorio unico tra laghi e montagne.</p>
+    <div class="hero-cta">
+      {pagine.gite && <a href="/gite" class="btn-primary">Vedi le gite →</a>}
+      <a href="/chi-sono" class="btn-secondary">Chi sono</a>
+    </div>
+  </div>
+</section>
+
+<!-- VALORI -->
+<section class="valori">
+  <div class="sezione-header">
+    <h2>Perché scegliere Vivi Insubria</h2>
+    <p>Esperienze pensate per chi vuole scoprire il territorio in modo autentico e senza stress</p>
+  </div>
+  <div class="valori-grid">
+    <div class="valore-card">
+      <div class="valore-icon">🏔️</div>
+      <h3>Natura accessibile</h3>
+      <p>Percorsi facili e adatti a tutti, senza attrezzatura speciale, per godersi il paesaggio senza fatica.</p>
+    </div>
+    <div class="valore-card">
+      <div class="valore-icon">🍽️</div>
+      <h3>Sapori autentici</h3>
+      <p>Pranzi e degustazioni in agriturismi e ristoranti locali, con i prodotti tipici del territorio insubre.</p>
+    </div>
+    <div class="valore-card">
+      <div class="valore-icon">👥</div>
+      <h3>Piccoli gruppi</h3>
+      <p>Massimo 15 partecipanti per gita, per un'esperienza più intima e personale, non una gita di massa.</p>
+    </div>
+    <div class="valore-card">
+      <div class="valore-icon">📍</div>
+      <h3>Vicino a Milano</h3>
+      <p>A meno di un'ora da Milano. Ogni weekend una destinazione diversa, senza bisogno di organizzare nulla.</p>
+    </div>
+  </div>
+</section>
+
+<!-- GITE IN EVIDENZA -->
+{pagine.gite && gite.length > 0 && (
+  <section class="sezione">
+    <div class="sezione-header">
+      <h2>Prossime gite</h2>
+      <p>Prenota il tuo posto — i gruppi sono piccoli e i posti si esauriscono</p>
+    </div>
+    <div class="gite-grid">
+      {gite.map(gita => (
+        <a href={`/gite/${gita.slug}`} class="gita-card">
+          <div class="gita-img">
+            {gita.data.immagine
+              ? <img src={gita.data.immagine} alt={gita.data.title} />
+              : '🏔️'}
+          </div>
+          <div class="gita-body">
+            <span class="gita-badge">{gita.data.difficolta}</span>
+            <h3>{gita.data.title}</h3>
+            <div class="gita-meta">
+              <span>⏱ {gita.data.durata}</span>
+              <span>👥 max {gita.data.posti}</span>
+            </div>
+            <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+              <span class="gita-prezzo">{gita.data.prezzo} €/persona</span>
+              <span style="font-size: 0.8rem; color: var(--lago); font-weight: 500;">Prenota →</span>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+    <div style="text-align: center; margin-top: 2rem;">
+      <a href="/gite" class="btn-lago">Tutte le gite</a>
+    </div>
+  </section>
+)}
+
+<!-- CTA NEWSLETTER -->
+<section class="cta-band">
+  <h2>Resta aggiornato</h2>
+  <p>Ricevi in anticipo le nuove gite, le esperienze e le storie del territorio direttamente nella tua email.</p>
+  <a href="/contatti" class="btn-lago">Iscriviti alla newsletter</a>
+</section>
+</Layout>

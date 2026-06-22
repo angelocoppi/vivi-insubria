@@ -1,0 +1,148 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const tutte = await getCollection('gite');
+const gite = tutte.filter(g => g.data.published).sort((a, b) => {
+  if (!a.data.data_evento) return 1;
+  if (!b.data.data_evento) return -1;
+  return new Date(a.data.data_evento) - new Date(b.data.data_evento);
+});
+
+function formatData(d) {
+  if (!d) return null;
+  return new Date(d).toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+---
+<Layout title="Gite" description="Tutte le gite organizzate da Vivi Insubria tra Lombardia e Canton Ticino">
+<style>
+  .page-header {
+    background: var(--verde);
+    color: white;
+    padding: 3rem 1.5rem 2.5rem;
+    text-align: center;
+  }
+  .page-header h1 { font-family: var(--font-display); font-size: 2.2rem; font-weight: 600; }
+  .page-header p { margin-top: 0.5rem; opacity: 0.85; }
+
+  .content { max-width: 1100px; margin: 3rem auto; padding: 0 1.5rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.75rem; }
+
+  .card {
+    background: white;
+    border: 1px solid var(--bordo);
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(0,0,0,0.1); }
+  .card-img {
+    height: 200px;
+    background: var(--verde-pale);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3.5rem;
+    overflow: hidden;
+  }
+  .card-img img { width: 100%; height: 100%; object-fit: cover; }
+  .card-body { padding: 1.5rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+
+  .badges { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .badge {
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 0.2rem 0.65rem;
+    border-radius: 20px;
+  }
+  .badge-diff { background: var(--verde-pale); color: var(--verde-chiaro); }
+  .badge-data { background: var(--lago-pale); color: var(--lago); }
+
+  .card-title { font-family: var(--font-display); font-size: 1.1rem; color: var(--testo); }
+  .card-meta { display: flex; gap: 1rem; font-size: 0.8rem; color: var(--testo-muted); }
+  .card-incluso { font-size: 0.8rem; color: var(--testo-muted); }
+  .card-incluso ul { padding-left: 1rem; margin: 0; }
+  .card-incluso li { margin-bottom: 0.2rem; }
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+    margin-top: auto;
+    border-top: 1px solid var(--bordo);
+  }
+  .prezzo { font-size: 1.2rem; font-weight: 600; color: var(--verde); }
+  .prezzo-sub { font-size: 0.75rem; font-weight: 400; color: var(--testo-muted); }
+  .btn-card {
+    background: var(--verde);
+    color: white;
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 0.5rem 1.1rem;
+    border-radius: 7px;
+    text-decoration: none;
+  }
+
+  .empty {
+    text-align: center;
+    padding: 4rem 1.5rem;
+    color: var(--testo-muted);
+  }
+  .empty h2 { font-family: var(--font-display); color: var(--verde); margin-bottom: 0.75rem; }
+</style>
+
+<div class="page-header">
+  <h1>🥾 Gite organizzate</h1>
+  <p>Esperienze nella natura tra Lombardia e Canton Ticino — piccoli gruppi, grandi panorami</p>
+</div>
+
+<div class="content">
+  {gite.length === 0 ? (
+    <div class="empty">
+      <h2>Prossimamente</h2>
+      <p>Le prossime gite saranno pubblicate a breve. <a href="/contatti" style="color: var(--lago);">Iscriviti alla newsletter</a> per essere il primo a saperlo.</p>
+    </div>
+  ) : (
+    <div class="grid">
+      {gite.map(gita => (
+        <a href={`/gite/${gita.slug}`} class="card">
+          <div class="card-img">
+            {gita.data.immagine
+              ? <img src={gita.data.immagine} alt={gita.data.title} />
+              : '🏔️'}
+          </div>
+          <div class="card-body">
+            <div class="badges">
+              <span class="badge badge-diff">{gita.data.difficolta}</span>
+              {gita.data.data_evento && <span class="badge badge-data">{formatData(gita.data.data_evento)}</span>}
+            </div>
+            <h2 class="card-title">{gita.data.title}</h2>
+            <div class="card-meta">
+              <span>⏱ {gita.data.durata}</span>
+              <span>👥 Max {gita.data.posti} persone</span>
+            </div>
+            {gita.data.incluso && gita.data.incluso.length > 0 && (
+              <div class="card-incluso">
+                <ul>
+                  {gita.data.incluso.slice(0,3).map(v => <li>✓ {v}</li>)}
+                </ul>
+              </div>
+            )}
+            <div class="card-footer">
+              <div>
+                <div class="prezzo">{gita.data.prezzo} €</div>
+                <div class="prezzo-sub">a persona</div>
+              </div>
+              <span class="btn-card">Prenota →</span>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+  )}
+</div>
+</Layout>

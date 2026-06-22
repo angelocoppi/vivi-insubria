@@ -1,0 +1,106 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="Chi sono" description="Scopri chi c'è dietro Vivi Insubria">
+<style>
+  .page-header { background: var(--verde); color: white; padding: 3rem 1.5rem; text-align: center; }
+  .page-header h1 { font-family: var(--font-display); font-size: 2rem; font-weight: 600; }
+
+  .content { max-width: 760px; margin: 3rem auto; padding: 0 1.5rem 4rem; }
+
+  .profilo {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+  }
+  .avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: var(--verde-pale);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    flex-shrink: 0;
+    border: 3px solid var(--verde);
+    overflow: hidden;
+  }
+  .avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .profilo-testo h2 { font-family: var(--font-display); font-size: 1.5rem; color: var(--verde); margin-bottom: 0.25rem; }
+  .profilo-testo .ruolo { color: var(--testo-muted); font-size: 0.9rem; margin-bottom: 0.75rem; }
+
+  .prose p { color: var(--testo-muted); line-height: 1.8; margin-bottom: 1rem; font-size: 0.95rem; }
+  .prose h3 { font-family: var(--font-display); font-size: 1.15rem; color: var(--verde); margin: 1.75rem 0 0.6rem; }
+
+  .valori-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; margin: 1rem 0; }
+  .valori-list li { display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.9rem; color: var(--testo-muted); }
+  .valori-list li::before { content: '→'; color: var(--verde-chiaro); font-weight: 600; flex-shrink: 0; }
+
+  .cta-box {
+    background: var(--verde-pale);
+    border: 1px solid #C6E0A8;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-top: 2rem;
+    text-align: center;
+  }
+  .cta-box h3 { font-family: var(--font-display); color: var(--verde); margin-bottom: 0.5rem; }
+  .cta-box p { color: var(--testo-muted); font-size: 0.9rem; margin-bottom: 1rem; }
+  .btn-verde {
+    background: var(--verde);
+    color: white;
+    font-weight: 600;
+    padding: 0.7rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    display: inline-block;
+  }
+</style>
+
+<div class="page-header">
+  <h1>Chi sono</h1>
+</div>
+
+<div class="content">
+  <div class="profilo">
+    <div class="avatar">🧭</div>
+    <div class="profilo-testo">
+      <h2>Vivi Insubria</h2>
+      <div class="ruolo">Fondatore e guida del territorio</div>
+      <p style="color: var(--testo-muted); font-size: 0.9rem;">Appassionato di natura, cultura locale e buon cibo — nato e cresciuto tra i laghi e le montagne dell'Insubria.</p>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p>
+      Vivi Insubria nasce da una passione semplice: la voglia di condividere la bellezza di un territorio spesso sconosciuto anche a chi ci vive vicino. Il Lago Maggiore, le valli alpine, i borghi storici, le tradizioni gastronomiche — tutto questo è a portata di mano da Milano, eppure in pochi lo conoscono davvero.
+    </p>
+    <p>
+      Ho iniziato a organizzare gite per amici e colleghi, e ho visto ogni volta la stessa reazione: meraviglia. "Non sapevo esistesse un posto così vicino." Così ho deciso di farne qualcosa di strutturato, accessibile a tutti.
+    </p>
+
+    <h3>Come organizzo le gite</h3>
+    <ul class="valori-list">
+      <li>Percorsi facili, adatti anche a chi non ha esperienza escursionistica</li>
+      <li>Gruppi piccoli (massimo 15 persone) per un'esperienza più personale</li>
+      <li>Pranzi e degustazioni in agriturismi e ristoranti selezionati</li>
+      <li>Tutto incluso nel prezzo: nessuna sorpresa</li>
+      <li>Zero stress: basta arrivare al punto di ritrovo</li>
+    </ul>
+
+    <h3>Il territorio che esploriamo</h3>
+    <p>
+      L'Insubria è il territorio che abbraccia il Lago Maggiore, il Lago di Varese, il Lago di Lugano e le valli che si estendono fino al Canton Ticino. Un'area ricca di storia, natura e tradizioni gastronomiche uniche, a meno di un'ora da Milano.
+    </p>
+  </div>
+
+  <div class="cta-box">
+    <h3>Vieni con noi</h3>
+    <p>Guarda le prossime gite disponibili o scrivimi per qualsiasi domanda.</p>
+    <a href="/gite" class="btn-verde">Vedi le gite</a>
+  </div>
+</div>
+</Layout>

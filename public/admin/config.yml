@@ -1,0 +1,84 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "public/images/uploads"
+public_folder: "/images/uploads"
+
+publish_mode: editorial_workflow
+
+collections:
+
+  - name: "impostazioni"
+    label: "⚙️ Impostazioni sito"
+    files:
+      - label: "Impostazioni generali"
+        name: "generale"
+        file: "src/content/impostazioni/generale.json"
+        fields:
+          - { label: "Nome sito", name: "nome_sito", widget: "string", default: "Vivi Insubria" }
+          - { label: "Tagline", name: "tagline", widget: "string" }
+          - { label: "Email contatto", name: "email", widget: "string" }
+          - { label: "Telefono / WhatsApp", name: "telefono", widget: "string", required: false }
+          - { label: "Instagram URL", name: "instagram", widget: "string", required: false }
+          - { label: "Facebook URL", name: "facebook", widget: "string", required: false }
+
+      - label: "Visibilità pagine"
+        name: "pagine"
+        file: "src/content/impostazioni/pagine.json"
+        fields:
+          - { label: "Mostra pagina Gite", name: "gite", widget: "boolean", default: true }
+          - { label: "Mostra pagina Esperienze", name: "esperienze", widget: "boolean", default: false }
+          - { label: "Mostra pagina Ricette", name: "ricette", widget: "boolean", default: false }
+          - { label: "Mostra pagina Storia e Cultura", name: "storia", widget: "boolean", default: false }
+          - { label: "Mostra Shop prodotti locali", name: "shop", widget: "boolean", default: false }
+          - { label: "Mostra Merchandising", name: "merchandising", widget: "boolean", default: false }
+          - { label: "Mostra Blog", name: "blog", widget: "boolean", default: false }
+
+  - name: "gite"
+    label: "🥾 Gite"
+    folder: "src/content/gite"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Titolo", name: "title", widget: "string" }
+      - { label: "Pubblicata", name: "published", widget: "boolean", default: false }
+      - { label: "Data evento", name: "data_evento", widget: "datetime", required: false }
+      - { label: "Prezzo (€)", name: "prezzo", widget: "number" }
+      - { label: "Posti disponibili", name: "posti", widget: "number", default: 15 }
+      - { label: "Durata", name: "durata", widget: "string", default: "Giornata intera" }
+      - { label: "Difficoltà", name: "difficolta", widget: "select", options: ["Facile", "Media", "Impegnativa"], default: "Facile" }
+      - { label: "Immagine copertina", name: "immagine", widget: "image", required: false }
+      - { label: "Cosa è incluso", name: "incluso", widget: "list", field: { label: "Voce", name: "voce", widget: "string" } }
+      - { label: "Cosa NON è incluso", name: "non_incluso", widget: "list", field: { label: "Voce", name: "voce", widget: "string" }, required: false }
+      - { label: "Punto di ritrovo", name: "ritrovo", widget: "string", required: false }
+      - { label: "Orario ritrovo", name: "orario", widget: "string", required: false }
+      - { label: "Descrizione completa", name: "body", widget: "markdown" }
+
+  - name: "blog"
+    label: "📝 Blog / Articoli"
+    folder: "src/content/blog"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "Titolo", name: "title", widget: "string" }
+      - { label: "Pubblicato", name: "published", widget: "boolean", default: false }
+      - { label: "Data pubblicazione", name: "date", widget: "datetime" }
+      - { label: "Categoria", name: "categoria", widget: "select", options: ["Gite", "Ricette", "Storia", "Cultura", "News"] }
+      - { label: "Immagine copertina", name: "immagine", widget: "image", required: false }
+      - { label: "Estratto", name: "estratto", widget: "text" }
+      - { label: "Contenuto", name: "body", widget: "markdown" }
+
+  - name: "ricette"
+    label: "🍽️ Ricette"
+    folder: "src/content/ricette"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Nome ricetta", name: "title", widget: "string" }
+      - { label: "Pubblicata", name: "published", widget: "boolean", default: false }
+      - { label: "Immagine", name: "immagine", widget: "image", required: false }
+      - { label: "Tempo preparazione (minuti)", name: "tempo_prep", widget: "number", required: false }
+      - { label: "Porzioni", name: "porzioni", widget: "number", default: 4 }
+      - { label: "Ingredienti", name: "ingredienti", widget: "list", field: { label: "Ingrediente", name: "ingrediente", widget: "string" } }
+      - { label: "Preparazione", name: "body", widget: "markdown" }

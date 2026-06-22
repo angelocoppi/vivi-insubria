@@ -1,0 +1,213 @@
+---
+import pagine from '../content/impostazioni/pagine.json';
+import generale from '../content/impostazioni/generale.json';
+
+const { title = generale.nome_sito, description = generale.tagline } = Astro.props;
+const pathname = Astro.url.pathname;
+
+const navLinks = [
+  { href: '/', label: 'Home', always: true },
+  { href: '/gite', label: 'Gite', key: 'gite' },
+  { href: '/esperienze', label: 'Esperienze', key: 'esperienze' },
+  { href: '/ricette', label: 'Ricette', key: 'ricette' },
+  { href: '/storia', label: 'Storia e Cultura', key: 'storia' },
+  { href: '/shop', label: 'Shop', key: 'shop' },
+  { href: '/merchandising', label: 'Merchandising', key: 'merchandising' },
+  { href: '/blog', label: 'Blog', key: 'blog' },
+  { href: '/chi-sono', label: 'Chi sono', always: true },
+  { href: '/contatti', label: 'Contatti', always: true },
+];
+
+const visibleLinks = navLinks.filter(l => l.always || pagine[l.key]);
+---
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content={description} />
+  <title>{title} | Vivi Insubria</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --verde: #2D5016;
+      --verde-chiaro: #4A7C28;
+      --verde-pale: #EEF4E8;
+      --lago: #2B6CB0;
+      --lago-pale: #EBF4FF;
+      --terra: #8B4513;
+      --crema: #FAF8F3;
+      --testo: #1A1A1A;
+      --testo-muted: #5A5A5A;
+      --bordo: #E0DDD5;
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body: 'Inter', system-ui, sans-serif;
+    }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--testo);
+      background: var(--crema);
+      line-height: 1.6;
+    }
+
+    /* NAV */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: white;
+      border-bottom: 1px solid var(--bordo);
+      padding: 0 1.5rem;
+    }
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--verde);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .nav-logo span { color: var(--lago); }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      list-style: none;
+      overflow-x: auto;
+    }
+    .nav-links a {
+      display: block;
+      padding: 0.4rem 0.75rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--testo-muted);
+      text-decoration: none;
+      border-radius: 6px;
+      transition: color 0.15s, background 0.15s;
+      white-space: nowrap;
+    }
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--verde); background: var(--verde-pale); }
+
+    /* MAIN */
+    main { min-height: calc(100vh - 60px - 200px); }
+
+    /* FOOTER */
+    footer {
+      background: var(--verde);
+      color: rgba(255,255,255,0.85);
+      padding: 2.5rem 1.5rem;
+      margin-top: 4rem;
+      font-size: 0.875rem;
+    }
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .footer-brand { font-family: var(--font-display); font-size: 1.2rem; color: white; }
+    .footer-links { display: flex; flex-direction: column; gap: 0.4rem; }
+    .footer-links a { color: rgba(255,255,255,0.75); text-decoration: none; }
+    .footer-links a:hover { color: white; }
+    .footer-copy { width: 100%; text-align: center; color: rgba(255,255,255,0.5); padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.15); margin-top: 1rem; }
+
+    /* MOBILE NAV */
+    .nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; color: var(--testo); }
+    @media (max-width: 768px) {
+      .nav-toggle { display: block; }
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        right: 0;
+        background: white;
+        border-bottom: 1px solid var(--bordo);
+        padding: 1rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { width: 100%; padding: 0.6rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">Vivi <span>Insubria</span></a>
+      <button class="nav-toggle" aria-label="Menu" onclick="this.nextElementSibling.classList.toggle('open')">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+      <ul class="nav-links">
+        {visibleLinks.map(link => (
+          <li>
+            <a href={link.href} class={pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href)) ? 'active' : ''}>
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <slot />
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand">Vivi Insubria</div>
+        <p style="margin-top: 0.5rem; max-width: 260px; font-size: 0.8rem;">{generale.tagline}</p>
+      </div>
+      <div class="footer-links">
+        {visibleLinks.slice(0,5).map(link => (
+          <a href={link.href}>{link.label}</a>
+        ))}
+      </div>
+      <div class="footer-links">
+        <a href={`mailto:${generale.email}`}>{generale.email}</a>
+        {generale.instagram && <a href={generale.instagram} target="_blank" rel="noopener">Instagram</a>}
+        {generale.facebook && <a href={generale.facebook} target="_blank" rel="noopener">Facebook</a>}
+        <a href="/admin">Area admin</a>
+      </div>
+    </div>
+    <div class="footer-inner">
+      <p class="footer-copy">© {new Date().getFullYear()} Vivi Insubria — P.IVA in aggiornamento</p>
+    </div>
+  </footer>
+
+  <script>
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", user => {
+        if (!user) {
+          window.netlifyIdentity.on("login", () => { document.location.href = "/admin/"; });
+        }
+      });
+    }
+  </script>
+</body>
+</html>
