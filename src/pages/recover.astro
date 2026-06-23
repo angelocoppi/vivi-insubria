@@ -1,0 +1,16 @@
+---
+---
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+</head>
+<body>
+  <script>
+    window.netlifyIdentity && window.netlifyIdentity.on('init', () => {
+      window.location.href = '/admin/' + window.location.hash;
+    });
+  </script>
+</body>
+</html>
